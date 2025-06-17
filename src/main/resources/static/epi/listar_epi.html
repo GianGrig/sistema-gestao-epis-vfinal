@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Listar EPIs</title>
+</head>
+<body>
+<section style="max-width: 600px; margin: 40px auto; padding: 20px; border: 2px solid #333; border-radius: 10px; font-family: Arial, sans-serif;">
+    <h1 style="text-align: center;">Lista de EPIs</h1>
+    <hr><br>
+
+    <table border="1" style="width: 100%; border-collapse: collapse; text-align: left;">
+        <thead>
+        <tr>
+            <th style="width: 10%;">ID</th>
+            <th style="width: 60%;">Nome</th>
+            <th style="width: 30%;">Quantidade</th>
+        </tr>
+        </thead>
+        <tbody id="tabela-epis">
+        <tr><td colspan="3">Carregando...</td></tr>
+        </tbody>
+    </table><br>
+    <hr>
+
+    <div style="text-align: center;">
+        <a href="form_epi.html">
+            <button type="button">Voltar</button>
+        </a>
+    </div>
+</section>
+
+<script>
+    fetch('/epis')
+        .then(response => response.json())
+        .then(data => {
+            const tabela = document.getElementById('tabela-epis');
+            tabela.innerHTML = '';
+            data.forEach(epi => {
+                const linha = document.createElement('tr');
+                linha.innerHTML = `
+                    <td>${epi.id_epi}</td>
+                    <td>${epi.nome}</td>
+                    <td>${epi.quantidade}</td>
+                `;
+                tabela.appendChild(linha);
+            });
+        })
+        .catch(error => {
+            console.error('Erro ao carregar EPIs:', error);
+            document.getElementById('tabela-epis').innerHTML = '<tr><td colspan="3">Erro ao carregar os dados.</td></tr>';
+        });
+</script>
+</body>
+</html>

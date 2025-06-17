@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Menu Empréstimo</title>
+</head>
+<body>
+<section style="max-width: 600px; margin: 40px auto; padding: 20px; border: 2px solid #333; border-radius: 10px; font-family: Arial, sans-serif;">
+    <h1 style="text-align: center; font-size: 28px;">Menu Empréstimo</h1>
+    <hr>
+
+    <h1>Cadastrar Empréstimo</h1>
+    <form method="post" action="#">
+        <input type="hidden" name="id_emprestimo">
+
+        <div>
+            <label for="id_usuario">ID Usuário:</label><br>
+            <input type="number" id="id_usuario" name="id_usuario" required><br><br>
+        </div>
+
+        <div>
+            <label for="id_epi">ID EPI:</label><br>
+            <input type="number" id="id_epi" name="id_epi" required><br><br>
+        </div>
+
+        <div>
+            <label for="data_retirada">Data Retirada:</label><br>
+            <input type="datetime-local" id="data_retirada" name="data_retirada" required><br><br>
+        </div>
+
+        <div>
+            <label for="data_prevista_devolucao">Data Prevista Devolução:</label><br>
+            <input type="datetime-local" id="data_prevista_devolucao" name="data_prevista_devolucao" required><br><br>
+        </div>
+
+        <div>
+            <label for="confirmacao_retirada">Confirmação Retirada:</label><br>
+            <select id="confirmacao_retirada" name="confirmacao_retirada">
+                <option value="1">Sim</option>
+                <option value="0">Não</option>
+            </select><br><br>
+        </div>
+
+        <div>
+            <button type="submit">Salvar</button>
+            <button type="reset">Cancelar</button>
+        </div>
+    </form>
+
+    <hr>
+
+    <h1>Lista de Empréstimos</h1>
+    <a href="/emprestimo/listar_emprestimo.html">
+        <button type="button">Ver Lista de Empréstimos</button>
+    </a>
+
+    <hr>
+
+    <h1>Editar Empréstimo</h1>
+    <form method="post" action="#">
+        <div>
+            <label for="id_emprestimo_editar">Informe o ID do Empréstimo:</label><br>
+            <input type="number" id="id_emprestimo_editar" name="id_emprestimo" required><br><br>
+        </div>
+
+        <div>
+            <label for="id_usuario_editar">ID Usuário:</label><br>
+            <input type="number" id="id_usuario_editar" name="id_usuario" required><br><br>
+        </div>
+
+        <div>
+            <label for="id_epi_editar">ID EPI:</label><br>
+            <input type="number" id="id_epi_editar" name="id_epi" required><br><br>
+        </div>
+
+        <div>
+            <label for="data_retirada_editar">Data Retirada:</label><br>
+            <input type="datetime-local" id="data_retirada_editar" name="data_retirada" required><br><br>
+        </div>
+
+        <div>
+            <label for="data_prevista_devolucao_editar">Data Prevista Devolução:</label><br>
+            <input type="datetime-local" id="data_prevista_devolucao_editar" name="data_prevista_devolucao" required><br><br>
+        </div>
+
+        <div>
+            <label for="confirmacao_retirada_editar">Confirmação Retirada:</label><br>
+            <select id="confirmacao_retirada_editar" name="confirmacao_retirada">
+                <option value="1">Sim</option>
+                <option value="0">Não</option>
+            </select><br><br>
+        </div>
+
+        <div>
+            <button type="submit">Salvar</button>
+            <button type="reset">Cancelar</button>
+        </div>
+    </form>
+
+    <hr>
+
+    <div style="margin: 20px 0; text-align: center;">
+        <a href="/menu/form_menu.html">
+            <button type="button" style="padding: 10px; width: 200px; font-size: 16px;">Voltar ao Menu Principal</button>
+        </a>
+    </div>
+</section>
+</body>
+</html>

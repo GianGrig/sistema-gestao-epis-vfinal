@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Menu EPI</title>
+</head>
+<body>
+<section style="max-width: 600px; margin: 40px auto; padding: 20px; border: 2px solid #333; border-radius: 10px; font-family: Arial, sans-serif;">
+    <h1 style="text-align: center; font-size: 28px;">Menu EPI</h1>
+    <hr>
+
+    <h2>Cadastrar EPI</h2>
+    <form method="post" action="/epis">
+        <label for="nome">Nome:</label><br>
+        <input type="text" id="nome" name="nome" required><br><br>
+
+        <label for="quantidade">Quantidade:</label><br>
+        <input type="number" id="quantidade" name="quantidade" required><br><br>
+
+        <button type="submit">Salvar</button>
+        <button type="reset">Cancelar</button>
+    </form>
+
+    <hr>
+    <h2>Lista de EPIs</h2>
+    <a href="listar_epi.html">
+        <button type="button">Ver Lista de EPIs</button>
+    </a>
+    <hr>
+
+    <h2>Editar EPI</h2>
+    <form method="post" action="/epis/atualizar">
+        <label for="id_epi_editar">ID do EPI:</label><br>
+        <input type="number" id="id_epi_editar" name="id_epi" required><br><br>
+
+        <label for="nome_editar">Nome:</label><br>
+        <input type="text" id="nome_editar" name="nome" required><br><br>
+
+        <label for="quantidade_editar">Quantidade:</label><br>
+        <input type="number" id="quantidade_editar" name="quantidade" required><br><br>
+
+        <button type="submit">Atualizar</button>
+        <button type="reset">Cancelar</button>
+    </form>
+
+    <hr>
+    <h2>Excluir EPI</h2>
+    <form method="post" action="/epis/deletar">
+        <label for="id_epi_excluir">ID do EPI:</label><br>
+        <input type="number" id="id_epi_excluir" name="id_epi" required><br><br>
+
+        <button type="submit">Excluir</button>
+        <button type="reset">Cancelar</button>
+    </form>
+
+    <hr>
+    <div style="text-align: center;">
+        <a href="/menu/form_menu.html">
+            <button type="button" style="padding: 10px; width: 200px; font-size: 16px;">Voltar ao Menu Principal</button>
+        </a>
+    </div>
+</section>
+</body>
+</html>

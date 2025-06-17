@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Menu Devolução</title>
+</head>
+<body>
+<section style="max-width: 600px; margin: 40px auto; padding: 20px; border: 2px solid #333; border-radius: 10px; font-family: Arial, sans-serif;">
+    <h1 style="text-align: center; font-size: 28px;">Menu Devolução</h1>
+    <hr>
+
+    <h1>Cadastrar Devolução</h1>
+    <form method="post" action="#">
+        <input type="hidden" name="id_devolucao">
+
+        <div>
+            <label for="id_emprestimo">ID Empréstimo:</label><br>
+            <input type="number" id="id_emprestimo" name="id_emprestimo" required><br><br>
+        </div>
+
+        <div>
+            <label for="data_devolucao">Data Devolução:</label><br>
+            <input type="datetime-local" id="data_devolucao" name="data_devolucao" required><br><br>
+        </div>
+
+        <div>
+            <button type="submit">Salvar</button>
+            <button type="reset">Cancelar</button>
+        </div>
+    </form>
+
+    <hr>
+
+    <h1>Lista de Devoluções</h1>
+    <a href="/devolucao/listar_devolucao.html">
+        <button type="button">Ver Lista de Devoluções</button>
+    </a>
+
+    <hr>
+
+    <h1>Editar Devolução</h1>
+    <form method="post" action="#">
+        <div>
+            <label for="id_devolucao_editar">Informe o ID da Devolução:</label><br>
+            <input type="number" id="id_devolucao_editar" name="id_devolucao" required><br><br>
+        </div>
+
+        <div>
+            <label for="id_emprestimo_editar">ID Empréstimo:</label><br>
+            <input type="number" id="id_emprestimo_editar" name="id_emprestimo" required><br><br>
+        </div>
+
+        <div>
+            <label for="data_devolucao_editar">Data Devolução:</label><br>
+            <input type="datetime-local" id="data_devolucao_editar" name="data_devolucao" required><br><br>
+        </div>
+
+        <div>
+            <button type="submit">Salvar</button>
+            <button type="reset">Cancelar</button>
+        </div>
+    </form>
+
+    <hr>
+
+    <div style="margin: 20px 0; text-align: center;">
+        <a href="/menu/form_menu.html">
+            <button type="button" style="padding: 10px; width: 200px; font-size: 16px;">Voltar ao Menu Principal</button>
+        </a>
+    </div>
+</section>
+</body>
+</html>
