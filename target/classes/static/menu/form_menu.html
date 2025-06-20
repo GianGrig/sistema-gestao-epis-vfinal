@@ -3,34 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <title>Menu Principal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #eef2f7;
+            margin: 0;
+            padding: 0;
+        }
+
+        section {
+            max-width: 400px;
+            margin: 60px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 28px;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+
+        .botao-menu {
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .botao-menu a button {
+            padding: 12px;
+            width: 220px;
+            font-size: 16px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .botao-menu a button:hover {
+            background-color: #2980b9;
+        }
+    </style>
 </head>
 <body>
 
-<section style="max-width: 400px; margin: 40px auto; padding: 20px; border: 2px solid #333; border-radius: 10px; font-family: Arial, sans-serif;">
-    <h1 style="text-align: center; font-size: 28px;">Menu Principal</h1>
-    <hr>
+<section>
+    <h1>Menu Principal</h1>
 
-    <div style="margin: 20px 0; text-align: center;">
-        <a href="/colaborador/form_usuario.html">
-            <button type="button" style="padding: 10px; width: 200px; font-size: 16px;">Gerenciar Usuários</button>
+    <div class="botao-menu">
+        <a href="/usuario/form_usuario.html">
+            <button type="button">Gerenciar Usuários</button>
         </a>
     </div>
 
-    <div style="margin: 20px 0; text-align: center;">
+    <div class="botao-menu">
         <a href="/epi/form_epi.html">
-            <button type="button" style="padding: 10px; width: 200px; font-size: 16px;">Gerenciar EPIs</button>
+            <button type="button">Gerenciar EPIs</button>
         </a>
     </div>
 
-    <div style="margin: 20px 0; text-align: center;">
+    <div class="botao-menu">
         <a href="/emprestimo/form_emprestimo.html">
-            <button type="button" style="padding: 10px; width: 200px; font-size: 16px;">Gerenciar Empréstimos</button>
+            <button type="button">Gerenciar Empréstimos</button>
         </a>
     </div>
 
-    <div style="margin: 20px 0; text-align: center;">
+    <div class="botao-menu">
         <a href="/devolucao/form_devolucao.html">
-            <button type="button" style="padding: 10px; width: 200px; font-size: 16px;">Gerenciar Devoluções</button>
+            <button type="button">Gerenciar Devoluções</button>
         </a>
     </div>
 </section>

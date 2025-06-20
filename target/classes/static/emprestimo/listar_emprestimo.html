@@ -2,42 +2,174 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Listar Empréstimos</title>
+    <title>Lista de Empréstimos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #eef2f7;
+            margin: 0;
+            padding: 0;
+        }
+
+        section {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        th, td {
+            padding: 10px 12px;
+            border: 1px solid #ccc;
+            height: 45px;
+        }
+
+        th {
+            background-color: #3498db;
+            color: white;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        td {
+            text-align: center;
+            background-color: #ffffff;
+        }
+
+        tr:nth-child(even) td {
+            background-color: #f9f9f9;
+        }
+
+        .mensagem {
+            padding: 12px;
+            border-radius: 5px;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .erro {
+            background-color: #fddede;
+            color: #a10000;
+            border: 1px solid #e29b9b;
+        }
+
+        .sucesso {
+            background-color: #dbf7dd;
+            color: #006600;
+            border: 1px solid #a3d5a7;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #27ae60;
+        }
+
+        .botao-voltar {
+            text-align: center;
+            margin-top: 30px;
+        }
+    </style>
 </head>
 <body>
-<section style="max-width: 1000px; margin: 40px auto; padding: 20px; border: 2px solid #333; border-radius: 10px; font-family: Arial, sans-serif;">
-    <h1 style="text-align: center;">Lista de Empréstimos</h1>
-    <hr><br>
-
-    <table border="1" style="width: 100%; border-collapse: collapse; text-align: left;">
+<section>
+    <h1>Lista de Empréstimos</h1>
+    <div id="mensagem"></div>
+    <table>
         <thead>
         <tr>
-            <th style="width: 5%;">ID</th>
-            <th style="width: 10%;">ID Usuário</th>
-            <th style="width: 10%;">ID EPI</th>
-            <th style="width: 25%;">Data Retirada</th>
-            <th style="width: 30%;">Data Prevista Devolução</th>
-            <th style="width: 20%;">Confirmação Retirada</th>
+            <th>ID</th>
+            <th>ID Usuário</th>
+            <th>ID EPI</th>
+            <th>Data Retirada</th>
+            <th>Data Prevista Devolução</th>
+            <th>Confirmado</th>
         </tr>
         </thead>
-        <tbody>
-        <tr>
-            <td>1</td>
-            <td>5</td>
-            <td>2</td>
-            <td>2025-06-02 08:00</td>
-            <td>2025-06-09 08:00</td>
-            <td>Sim</td>
-        </tr>
+        <tbody id="tabela-emprestimos">
+        <tr><td colspan="6">Carregando...</td></tr>
         </tbody>
-    </table><br>
-    <hr>
+    </table>
 
-    <div style="text-align: center;">
+    <div class="botao-voltar">
         <a href="/emprestimo/form_emprestimo.html">
             <button type="button">Voltar</button>
         </a>
     </div>
 </section>
+
+<script>
+    const params = new URLSearchParams(window.location.search);
+    const erro = params.get("erro");
+    const sucesso = params.get("sucesso");
+
+    const divMensagem = document.getElementById("mensagem");
+
+    if (erro) {
+        divMensagem.innerHTML = decodeURIComponent(erro);
+        divMensagem.className = "mensagem erro";
+    } else if (sucesso) {
+        divMensagem.innerHTML = decodeURIComponent(sucesso);
+        divMensagem.className = "mensagem sucesso";
+    }
+
+    fetch('/emprestimos')
+        .then(response => response.json())
+        .then(data => {
+            const tabela = document.getElementById('tabela-emprestimos');
+            tabela.innerHTML = '';
+            data.forEach(e => {
+                const linha = document.createElement('tr');
+                linha.innerHTML = `
+                    <td>${e.id_emprestimo}</td>
+                    <td>${e.id_usuario}</td>
+                    <td>${e.id_epi}</td>
+                    <td>${formatarData(e.data_retirada)}</td>
+                    <td>${formatarData(e.data_prevista_devolucao)}</td>
+                    <td>${e.confirmacao_retirada ? 'Sim' : 'Não'}</td>
+                `;
+                tabela.appendChild(linha);
+            });
+        })
+        .catch(error => {
+            console.error('Erro ao carregar empréstimos:', error);
+            document.getElementById('tabela-emprestimos').innerHTML = '<tr><td colspan="6">Erro ao carregar os dados.</td></tr>';
+        });
+
+    function formatarData(data) {
+        if (!data) return '';
+        const dt = new Date(data);
+        const dia = dt.getDate().toString().padStart(2, '0');
+        const mes = (dt.getMonth() + 1).toString().padStart(2, '0');
+        const ano = dt.getFullYear();
+        const horas = dt.getHours().toString().padStart(2, '0');
+        const minutos = dt.getMinutes().toString().padStart(2, '0');
+        return `${dia}/${mes}/${ano} ${horas}:${minutos}`;
+    }
+</script>
 </body>
 </html>

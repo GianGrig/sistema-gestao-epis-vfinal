@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Lista de Devoluções</title>
+    <title>Lista de Usuários</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -12,7 +12,7 @@
         }
 
         section {
-            max-width: 800px;
+            max-width: 700px;
             margin: 40px auto;
             padding: 30px;
             background-color: #ffffff;
@@ -92,36 +92,35 @@
 </head>
 <body>
 <section>
-    <h1>Lista de Devoluções</h1>
+    <h1>Lista de Usuários</h1>
 
     <div id="mensagem"></div>
 
     <table>
         <thead>
         <tr>
-            <th style="width: 10%;">ID</th>
-            <th style="width: 20%;">ID Empréstimo</th>
-            <th style="width: 70%;">Data Devolução</th>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Perfil</th>
         </tr>
         </thead>
-        <tbody id="tabela-devolucoes">
-        <tr><td colspan="3">Carregando...</td></tr>
+        <tbody id="tabela-usuarios">
+        <tr><td colspan="4">Carregando...</td></tr>
         </tbody>
     </table>
 
     <div class="botao-voltar">
-        <a href="form_devolucao.html">
+        <a href="form_usuario.html">
             <button type="button">Voltar</button>
         </a>
     </div>
 </section>
 
 <script>
-    // Mensagem de sucesso ou erro
     const params = new URLSearchParams(window.location.search);
     const erro = params.get("erro");
     const sucesso = params.get("sucesso");
-
     const divMensagem = document.getElementById("mensagem");
 
     if (erro) {
@@ -132,36 +131,30 @@
         divMensagem.className = "mensagem sucesso";
     }
 
-    // Carregar dados da devolução
-    fetch('/devolucao')
+    fetch('/usuario')
         .then(response => response.json())
         .then(data => {
-            const tabela = document.getElementById('tabela-devolucoes');
+            const tabela = document.getElementById('tabela-usuarios');
             tabela.innerHTML = '';
-            data.forEach(devolucao => {
+            data.forEach(usuario => {
                 const linha = document.createElement('tr');
                 linha.innerHTML = `
-                    <td>${devolucao.id_devolucao}</td>
-                    <td>${devolucao.id_emprestimo}</td>
-                    <td>${formatarData(devolucao.data_devolucao)}</td>
+                    <td>${usuario.id_usuario}</td>
+                    <td>${usuario.nome}</td>
+                    <td>${usuario.email}</td>
+                    <td>${capitalizar(usuario.perfil)}</td>
                 `;
                 tabela.appendChild(linha);
             });
         })
         .catch(error => {
-            console.error('Erro ao carregar devoluções:', error);
-            document.getElementById('tabela-devolucoes').innerHTML = '<tr><td colspan="3">Erro ao carregar os dados.</td></tr>';
+            console.error('Erro ao carregar usuários:', error);
+            document.getElementById('tabela-usuarios').innerHTML = '<tr><td colspan="4">Erro ao carregar os dados.</td></tr>';
         });
 
-    function formatarData(data) {
-        if (!data) return '';
-        const dt = new Date(data);
-        const dia = dt.getDate().toString().padStart(2, '0');
-        const mes = (dt.getMonth() + 1).toString().padStart(2, '0');
-        const ano = dt.getFullYear();
-        const horas = dt.getHours().toString().padStart(2, '0');
-        const minutos = dt.getMinutes().toString().padStart(2, '0');
-        return `${dia}/${mes}/${ano} ${horas}:${minutos}`;
+    function capitalizar(texto) {
+        if (!texto) return '';
+        return texto.charAt(0).toUpperCase() + texto.slice(1).toLowerCase();
     }
 </script>
 </body>

@@ -2,14 +2,101 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Listar Devoluções</title>
+    <title>Lista de Devoluções</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #eef2f7;
+            margin: 0;
+            padding: 0;
+        }
+
+        section {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f9ff;
+        }
+
+        tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+
+        .mensagem {
+            padding: 12px;
+            border-radius: 5px;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .erro {
+            background-color: #fddede;
+            color: #a10000;
+            border: 1px solid #e29b9b;
+        }
+
+        .sucesso {
+            background-color: #dbf7dd;
+            color: #006600;
+            border: 1px solid #a3d5a7;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #27ae60;
+        }
+
+        .botao-voltar {
+            text-align: center;
+            margin-top: 30px;
+        }
+    </style>
 </head>
 <body>
-<section style="max-width: 800px; margin: 40px auto; padding: 20px; border: 2px solid #333; border-radius: 10px; font-family: Arial, sans-serif;">
-    <h1 style="text-align: center;">Lista de Devoluções</h1>
-    <hr><br>
+<section>
+    <h1>Lista de Devoluções</h1>
 
-    <table border="1" style="width: 100%; border-collapse: collapse; text-align: left;">
+    <div id="mensagem"></div>
+
+    <table>
         <thead>
         <tr>
             <th style="width: 10%;">ID</th>
@@ -17,21 +104,65 @@
             <th style="width: 70%;">Data Devolução</th>
         </tr>
         </thead>
-        <tbody>
-        <tr>
-            <td>1</td>
-            <td>3</td>
-            <td>2025-06-02 10:00</td>
-        </tr>
+        <tbody id="tabela-devolucoes">
+        <tr><td colspan="3">Carregando...</td></tr>
         </tbody>
-    </table><br>
-    <hr>
+    </table>
 
-    <div style="text-align: center;">
-        <a href="/devolucao/form_devolucao.html">
+    <div class="botao-voltar">
+        <a href="form_devolucao.html">
             <button type="button">Voltar</button>
         </a>
     </div>
 </section>
+
+<script>
+    // Mensagem de sucesso ou erro
+    const params = new URLSearchParams(window.location.search);
+    const erro = params.get("erro");
+    const sucesso = params.get("sucesso");
+
+    const divMensagem = document.getElementById("mensagem");
+
+    if (erro) {
+        divMensagem.innerHTML = decodeURIComponent(erro);
+        divMensagem.className = "mensagem erro";
+    } else if (sucesso) {
+        divMensagem.innerHTML = decodeURIComponent(sucesso);
+        divMensagem.className = "mensagem sucesso";
+    }
+
+    // Carregar dados da devolução
+    fetch('/devolucao')
+        .then(response => response.json())
+        .then(data => {
+            const tabela = document.getElementById('tabela-devolucoes');
+            tabela.innerHTML = '';
+            data.forEach(devolucao => {
+                const linha = document.createElement('tr');
+                linha.innerHTML = `
+                    <td>${devolucao.id_devolucao}</td>
+                    <td>${devolucao.id_emprestimo}</td>
+                    <td>${formatarData(devolucao.data_devolucao)}</td>
+                `;
+                tabela.appendChild(linha);
+            });
+        })
+        .catch(error => {
+            console.error('Erro ao carregar devoluções:', error);
+            document.getElementById('tabela-devolucoes').innerHTML = '<tr><td colspan="3">Erro ao carregar os dados.</td></tr>';
+        });
+
+    function formatarData(data) {
+        if (!data) return '';
+        const dt = new Date(data);
+        const dia = dt.getDate().toString().padStart(2, '0');
+        const mes = (dt.getMonth() + 1).toString().padStart(2, '0');
+        const ano = dt.getFullYear();
+        const horas = dt.getHours().toString().padStart(2, '0');
+        const minutos = dt.getMinutes().toString().padStart(2, '0');
+        return `${dia}/${mes}/${ano} ${horas}:${minutos}`;
+    }
+</script>
 </body>
 </html>
