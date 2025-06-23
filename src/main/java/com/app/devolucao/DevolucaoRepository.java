@@ -29,7 +29,7 @@ public class DevolucaoRepository {
     }
 
     public void atualizar(Devolucao d) {
-        String sql = "UPDATE devolucao SET id_emprestimo = ?, data_devolucao = ? WHERE id = ?";
+        String sql = "UPDATE devolucao SET id_emprestimo = ?, data_devolucao = ? WHERE id_devolucao = ?";
         jdbc.update(sql, d.getId_emprestimo(), d.getData_devolucao(), d.getId_devolucao());
     }
 
