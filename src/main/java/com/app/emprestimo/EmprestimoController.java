@@ -3,8 +3,10 @@ package com.app.emprestimo;
 import com.app.usuario.UsuarioRepository;
 import com.app.epi.EpiRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -78,6 +80,17 @@ public class EmprestimoController {
         emprestimoRepository.atualizar(emprestimo);
         return redirectComSucesso("Empréstimo atualizado com sucesso.");
     }
+
+    @GetMapping("/emprestimos/{id}")
+    @ResponseBody
+    public Emprestimo buscarPorId(@PathVariable int id) {
+        Emprestimo emprestimo = emprestimoRepository.buscarPorId(id);
+        if (emprestimo == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Empréstimo não encontrado");
+        }
+        return emprestimo;
+    }
+
 
     // Utilitários para redirecionamento com mensagem
     private String redirectComErro(String msg) {
