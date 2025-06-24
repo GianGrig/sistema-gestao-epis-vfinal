@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -112,6 +113,13 @@
 
         <label for="data_retirada">Data Retirada:</label>
         <input type="datetime-local" id="data_retirada" name="data_retirada" required>
+        <script>
+            window.onload = function () {
+                const now = new Date();
+                const localNow = now.toISOString().slice(0,16);
+                document.getElementById("data_retirada").value = localNow;
+            };
+        </script>
 
         <label for="data_prevista_devolucao">Data Prevista Devolução:</label>
         <input type="datetime-local" id="data_prevista_devolucao" name="data_prevista_devolucao" required>
@@ -166,7 +174,7 @@
 
     <hr>
     <div style="text-align: center;">
-        <a href="/menu/form_menu.html">
+        <a href="/menu/menu_adm.html">
             <button type="button">Voltar ao Menu Principal</button>
         </a>
     </div>
@@ -186,6 +194,46 @@
         divMensagem.innerHTML = decodeURIComponent(sucesso);
         divMensagem.className = "mensagem sucesso";
     }
+
+    function formatarDataHora(dataString) {
+        if (!dataString) return "";
+
+        if (!dataString.includes("T")) {
+            dataString = dataString.replace(" ", "T");
+        }
+
+        const data = new Date(dataString);
+        if (isNaN(data.getTime())) {
+            return "";
+        }
+
+        return data.toISOString().slice(0, 16);
+    }
+
+    document.getElementById("id_emprestimo").addEventListener("change", function () {
+        const id = this.value;
+
+        if (!id) return;
+
+        fetch(`/emprestimos/${id}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Empréstimo com ID " + id + " não encontrado.");
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById("id_usuario_editar").value = data.id_usuario;
+                document.getElementById("id_epi_editar").value = data.id_epi;
+                document.getElementById("data_retirada_editar").value = formatarDataHora(data.data_retirada);
+                document.getElementById("data_prevista_devolucao_editar").value = formatarDataHora(data.data_prevista_devolucao);
+                document.getElementById("confirmacao_retirada_editar").value = data.confirmacao_retirada ? "1" : "0";
+            })
+            .catch(error => {
+                const erroEncoded = encodeURIComponent(error.message);
+                window.location.href = "/emprestimo/form_emprestimo.html?erro=" + erroEncoded;
+            });
+    });
 </script>
 </body>
 </html>
