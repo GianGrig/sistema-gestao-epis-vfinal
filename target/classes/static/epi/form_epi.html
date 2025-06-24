@@ -106,7 +106,24 @@
     <h2>Cadastrar EPI</h2>
     <form method="post" action="/epis">
         <label for="nome">Nome:</label>
-        <input type="text" id="nome" name="nome" required>
+        <input type="text" id="nome" name="nome" list="listaEpis" required>
+        <datalist id="listaEpis">
+            <option value="Capacete de Segurança">
+            <option value="Óculos de Proteção">
+            <option value="Par de Luvas de Borracha">
+            <option value="Par de Luvas de Raspa">
+            <option value="Máscara PFF2">
+            <option value="Máscara com Filtro Químico">
+            <option value="Protetor Auricular">
+            <option value="Par de Botinas de Segurança">
+            <option value="Par de Calçados Antiderrapantes">
+            <option value="Cinturão de Segurança">
+            <option value="Colete Refletivo">
+            <option value="Avental de PVC">
+            <option value="Par de Mangas de Raspa">
+            <option value="Par de Perneiras de Raspa">
+            <option value="Protetor Facial">
+        </datalist>
 
         <label for="quantidade">Quantidade:</label>
         <input type="number" id="quantidade" name="quantidade" required>
@@ -130,7 +147,24 @@
         <input type="number" id="id_epi_editar" name="id_epi" required>
 
         <label for="nome_editar">Nome:</label>
-        <input type="text" id="nome_editar" name="nome" required>
+        <input type="text" id="nome_editar" name="nome" list="listaEpis" required>
+        <datalist id="listaEpis">
+            <option value="Capacete de Segurança">
+            <option value="Óculos de Proteção">
+            <option value="Par de Luvas de Borracha">
+            <option value="Par de Luvas de Raspa">
+            <option value="Máscara PFF2">
+            <option value="Máscara com Filtro Químico">
+            <option value="Protetor Auricular">
+            <option value="Par de Botinas de Segurança">
+            <option value="Par de Calçados Antiderrapantes">
+            <option value="Cinturão de Segurança">
+            <option value="Colete Refletivo">
+            <option value="Avental de PVC">
+            <option value="Par de Mangas de Raspa">
+            <option value="Par de Perneiras de Raspa">
+            <option value="Protetor Facial">
+        </datalist>
 
         <label for="quantidade_editar">Quantidade:</label>
         <input type="number" id="quantidade_editar" name="quantidade" required>
@@ -158,7 +192,19 @@
         </a>
     </div>
 </section>
-
+<script>
+    // Buscar EPIs e preencher a datalist
+    fetch("/epis")
+        .then(response => response.json())
+        .then(epis => {
+            const datalist = document.getElementById("listaEpis");
+            epis.forEach(epi => {
+                const option = document.createElement("option");
+                option.value = epi.nome;
+                datalist.appendChild(option);
+            });
+        });
+</script>
 <script>
     const params = new URLSearchParams(window.location.search);
     const erro = params.get("erro");
@@ -173,6 +219,28 @@
         divMensagem.innerHTML = decodeURIComponent(sucesso);
         divMensagem.className = "mensagem sucesso";
     }
+
+    document.getElementById("id_epi_editar").addEventListener("change", function () {
+        const id = this.value;
+
+        if (!id) return;
+
+        fetch(`/epis/${id}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("EPI com ID " + id + " não encontrado.");
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById("nome_editar").value = data.nome;
+                document.getElementById("quantidade_editar").value = data.quantidade;
+            })
+            .catch(error => {
+                const erroEncoded = encodeURIComponent(error.message);
+                window.location.href = "/epi/form_epi.html?erro=" + erroEncoded;
+            });
+    });
 </script>
 </body>
 </html>

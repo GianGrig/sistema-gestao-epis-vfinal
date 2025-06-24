@@ -1,19 +1,21 @@
 package com.app.devolucao;
 
+import java.time.LocalDateTime;
+
 public class Devolucao {
     private int id_devolucao;
     private int id_emprestimo;
-    private String data_devolucao;
+    private LocalDateTime data_devolucao;
 
     public Devolucao() {
     }
 
-    public Devolucao(int id_emprestimo, String data_devolucao) {
+    public Devolucao(int id_emprestimo, LocalDateTime data_devolucao) {
         this.id_emprestimo = id_emprestimo;
         this.data_devolucao = data_devolucao;
     }
 
-    public Devolucao(int id_devolucao, int id_emprestimo, String data_devolucao) {
+    public Devolucao(int id_devolucao, int id_emprestimo, LocalDateTime data_devolucao) {
         this.id_devolucao = id_devolucao;
         this.id_emprestimo = id_emprestimo;
         this.data_devolucao = data_devolucao;
@@ -31,11 +33,11 @@ public class Devolucao {
         this.id_emprestimo = id_emprestimo;
     }
 
-    public String getData_devolucao() {
+    public LocalDateTime getData_devolucao() {
         return data_devolucao;
     }
 
-    public void setData_devolucao(String data_devolucao) {
+    public void setData_devolucao(LocalDateTime data_devolucao) {
         this.data_devolucao = data_devolucao;
     }
 }

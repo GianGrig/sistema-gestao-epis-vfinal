@@ -2,8 +2,10 @@ package com.app.epi;
 
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -61,6 +63,16 @@ public class EpiController {
 
         epiRepository.atualizar(new Epi(id_epi, nome, quantidade));
         return redirectComMensagemSucesso("EPI atualizado com sucesso.");
+    }
+
+    @GetMapping("/epis/{id}")
+    @ResponseBody
+    public Epi buscarPorId(@PathVariable int id) {
+        Epi epi = epiRepository.buscarPorId(id);
+        if (epi == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "EPI com ID " + id + " não encontrado.");
+        }
+        return epi;
     }
 
     @PostMapping("/epis/deletar")

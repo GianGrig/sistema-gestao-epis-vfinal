@@ -1,17 +1,20 @@
+// Emprestimo.java
 package com.app.emprestimo;
+
+import java.time.LocalDateTime;
 
 public class Emprestimo {
     private int id_emprestimo;
     private int id_usuario;
     private int id_epi;
-    private String data_retirada;
-    private String data_prevista_devolucao;
+    private LocalDateTime data_retirada;
+    private LocalDateTime data_prevista_devolucao;
     private boolean confirmacao_retirada;
 
     public Emprestimo() {
     }
 
-    public Emprestimo(int id_usuario, int id_epi, String data_retirada, String data_prevista_devolucao, boolean confirmacao_retirada) {
+    public Emprestimo(int id_usuario, int id_epi, LocalDateTime data_retirada, LocalDateTime data_prevista_devolucao, boolean confirmacao_retirada) {
         this.id_usuario = id_usuario;
         this.id_epi = id_epi;
         this.data_retirada = data_retirada;
@@ -19,7 +22,7 @@ public class Emprestimo {
         this.confirmacao_retirada = confirmacao_retirada;
     }
 
-    public Emprestimo(int id_emprestimo, int id_usuario, int id_epi, String data_retirada, String data_prevista_devolucao, boolean confirmacao_retirada) {
+    public Emprestimo(int id_emprestimo, int id_usuario, int id_epi, LocalDateTime data_retirada, LocalDateTime data_prevista_devolucao, boolean confirmacao_retirada) {
         this.id_emprestimo = id_emprestimo;
         this.id_usuario = id_usuario;
         this.id_epi = id_epi;
@@ -48,19 +51,19 @@ public class Emprestimo {
         this.id_epi = id_epi;
     }
 
-    public String getData_retirada() {
+    public LocalDateTime getData_retirada() {
         return data_retirada;
     }
 
-    public void setData_retirada(String data_retirada) {
+    public void setData_retirada(LocalDateTime data_retirada) {
         this.data_retirada = data_retirada;
     }
 
-    public String getData_prevista_devolucao() {
+    public LocalDateTime getData_prevista_devolucao() {
         return data_prevista_devolucao;
     }
 
-    public void setData_prevista_devolucao(String data_prevista_devolucao) {
+    public void setData_prevista_devolucao(LocalDateTime data_prevista_devolucao) {
         this.data_prevista_devolucao = data_prevista_devolucao;
     }
 

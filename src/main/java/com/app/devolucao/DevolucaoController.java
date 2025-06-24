@@ -2,11 +2,15 @@ package com.app.devolucao;
 
 import com.app.emprestimo.EmprestimoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
@@ -21,12 +25,14 @@ public class DevolucaoController {
     @PostMapping("/devolucao")
     public String salvar(@RequestParam int id_emprestimo,
                          @RequestParam String data_devolucao) {
-
         if (emprestimoRepository.buscarPorId(id_emprestimo) == null) {
             return redirectComMensagemErro("Empréstimo com ID " + id_emprestimo + " não encontrado.");
         }
 
-        devolucaoRepository.salvar(new Devolucao(id_emprestimo, data_devolucao));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+        LocalDateTime data = LocalDateTime.parse(data_devolucao, formatter);
+
+        devolucaoRepository.salvar(new Devolucao(id_emprestimo, data));
         return redirectComMensagemSucesso("Devolução registrada com sucesso.");
     }
 
@@ -49,8 +55,21 @@ public class DevolucaoController {
             return redirectComMensagemErro("Empréstimo com ID " + id_emprestimo + " não encontrado.");
         }
 
-        devolucaoRepository.atualizar(new Devolucao(id_devolucao, id_emprestimo, data_devolucao));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+        LocalDateTime data = LocalDateTime.parse(data_devolucao, formatter);
+
+        devolucaoRepository.atualizar(new Devolucao(id_devolucao, id_emprestimo, data));
         return redirectComMensagemSucesso("Devolução atualizada com sucesso.");
+    }
+
+    @GetMapping("/devolucao/{id:[0-9]+}")
+    @ResponseBody
+    public Devolucao buscarPorId(@PathVariable int id) {
+        Devolucao devolucao = devolucaoRepository.buscarPorId(id);
+        if (devolucao == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Devolução não encontrada");
+        }
+        return devolucao;
     }
 
     // Métodos utilitários

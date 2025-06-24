@@ -2,8 +2,10 @@ package com.app.usuario;
 
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -75,6 +77,17 @@ public class UsuarioController {
         usuarioRepository.atualizar(new Usuario(id_usuario, nome, email, senha, perfil));
         return redirectComMensagemSucesso("Usuário atualizado com sucesso.");
     }
+
+    @GetMapping("/usuarios/{id}")
+    @ResponseBody
+    public Usuario buscarPorId(@PathVariable int id) {
+        Usuario usuario = usuarioRepository.buscarPorId(id);
+        if (usuario == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário com ID " + id + " não encontrado.");
+        }
+        return usuario;
+    }
+
 
     @PostMapping("/usuario/deletar")
     public String deletar(@RequestParam int id_usuario) {

@@ -119,20 +119,20 @@
 
     <h2>Editar Usuário</h2>
     <form method="post" action="/usuario/atualizar">
-        <label>ID do Usuário:</label>
-        <input type="number" name="id_usuario" required>
+        <label for="id_usuario_editar">ID do Usuário:</label>
+        <input type="number" id="id_usuario_editar" name="id_usuario" required>
 
-        <label>Nome:</label>
-        <input type="text" name="nome" required>
+        <label for="nome_editar">Nome:</label>
+        <input type="text" id="nome_editar" name="nome" required>
 
-        <label>Email:</label>
-        <input type="email" name="email" required>
+        <label for="email_editar">Email:</label>
+        <input type="email" id="email_editar" name="email" required>
 
-        <label>Senha:</label>
-        <input type="password" name="senha" required>
+        <label for="senha_editar">Senha:</label>
+        <input type="password" id="senha_editar" name="senha" required>
 
-        <label>Perfil:</label>
-        <select name="perfil" required>
+        <label for="perfil_editar">Perfil:</label>
+        <select id="perfil_editar" name="perfil" required>
             <option value="ADMINISTRADOR">Administrador</option>
             <option value="COLABORADOR">Colaborador</option>
         </select>
@@ -174,6 +174,29 @@
         divMensagem.innerHTML = decodeURIComponent(sucesso);
         divMensagem.className = "mensagem sucesso";
     }
+
+    document.getElementById("id_usuario_editar").addEventListener("change", function () {
+        const id = this.value;
+        if (!id) return;
+
+        fetch(`/usuarios/${id}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Usuário com ID " + id + " não encontrado.");
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById("nome_editar").value = data.nome;
+                document.getElementById("email_editar").value = data.email;
+                document.getElementById("perfil_editar").value = data.perfil;
+                document.getElementById("senha_editar").value = ""; // senha nunca preenchida
+            })
+            .catch(error => {
+                const erroEncoded = encodeURIComponent(error.message);
+                window.location.href = "/usuario/form_usuario.html?erro=" + erroEncoded;
+            });
+    });
 </script>
 </body>
 </html>

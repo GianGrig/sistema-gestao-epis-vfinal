@@ -152,6 +152,15 @@
 </section>
 
 <script>
+    function toDatetimeLocal(date) {
+        const pad = n => n.toString().padStart(2, '0');
+        return date.getFullYear() + '-' +
+            pad(date.getMonth() + 1) + '-' +
+            pad(date.getDate()) + 'T' +
+            pad(date.getHours()) + ':' +
+            pad(date.getMinutes());
+    }
+
     const params = new URLSearchParams(window.location.search);
     const msg = params.get("mensagem") || params.get("sucesso") || params.get("erro");
 
@@ -160,6 +169,38 @@
         div.textContent = decodeURIComponent(msg);
         div.className = "mensagem " + (params.has("erro") ? "erro" : "sucesso");
     }
+
+    function formatarDataHora(dataString) {
+        const data = new Date(dataString);
+        return toDatetimeLocal(data);
+    }
+
+    document.getElementById("id_devolucao").addEventListener("change", function () {
+        const id = this.value;
+        if (!id) return;
+
+        fetch(`/devolucao/${id}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Devolução com ID " + id + " não encontrada.");
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById("id_emprestimo_editar").value = data.id_emprestimo;
+                document.getElementById("data_devolucao_editar").value = formatarDataHora(data.data_devolucao);
+            })
+            .catch(error => {
+                alert(error.message);
+                document.getElementById("id_emprestimo_editar").value = "";
+                document.getElementById("data_devolucao_editar").value = "";
+            });
+    });
+
+    window.onload = function () {
+        const now = new Date();
+        document.getElementById("data_devolucao").value = toDatetimeLocal(now);
+    };
 </script>
 </body>
 </html>

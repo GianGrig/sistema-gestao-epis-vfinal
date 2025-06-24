@@ -1,3 +1,4 @@
+
 package com.app.emprestimo;
 
 import com.app.usuario.UsuarioRepository;
@@ -11,6 +12,8 @@ import org.springframework.web.server.ResponseStatusException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
@@ -32,17 +35,19 @@ public class EmprestimoController {
                          @RequestParam String data_prevista_devolucao,
                          @RequestParam boolean confirmacao_retirada) {
 
-        // Verifica se o usuário existe
         if (usuarioRepository.buscarPorId(id_usuario) == null) {
             return redirectComErro("Usuário com ID " + id_usuario + " não encontrado.");
         }
 
-        // Verifica se o EPI existe
         if (epiRepository.buscarPorId(id_epi) == null) {
             return redirectComErro("EPI com ID " + id_epi + " não encontrado.");
         }
 
-        Emprestimo emprestimo = new Emprestimo(id_usuario, id_epi, data_retirada, data_prevista_devolucao, confirmacao_retirada);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+        LocalDateTime retirada = LocalDateTime.parse(data_retirada, formatter);
+        LocalDateTime prevista = LocalDateTime.parse(data_prevista_devolucao, formatter);
+
+        Emprestimo emprestimo = new Emprestimo(id_usuario, id_epi, retirada, prevista, confirmacao_retirada);
         emprestimoRepository.salvar(emprestimo);
         return redirectComSucesso("Empréstimo cadastrado com sucesso.");
     }
@@ -66,17 +71,19 @@ public class EmprestimoController {
             return redirectComErro("Empréstimo com ID " + id_emprestimo + " não encontrado.");
         }
 
-        // Verifica se o usuário existe
         if (usuarioRepository.buscarPorId(id_usuario) == null) {
             return redirectComErro("Usuário com ID " + id_usuario + " não encontrado.");
         }
 
-        // Verifica se o EPI existe
         if (epiRepository.buscarPorId(id_epi) == null) {
             return redirectComErro("EPI com ID " + id_epi + " não encontrado.");
         }
 
-        Emprestimo emprestimo = new Emprestimo(id_emprestimo, id_usuario, id_epi, data_retirada, data_prevista_devolucao, confirmacao_retirada);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+        LocalDateTime retirada = LocalDateTime.parse(data_retirada, formatter);
+        LocalDateTime prevista = LocalDateTime.parse(data_prevista_devolucao, formatter);
+
+        Emprestimo emprestimo = new Emprestimo(id_emprestimo, id_usuario, id_epi, retirada, prevista, confirmacao_retirada);
         emprestimoRepository.atualizar(emprestimo);
         return redirectComSucesso("Empréstimo atualizado com sucesso.");
     }
@@ -91,8 +98,6 @@ public class EmprestimoController {
         return emprestimo;
     }
 
-
-    // Utilitários para redirecionamento com mensagem
     private String redirectComErro(String msg) {
         return "redirect:/emprestimo/form_emprestimo.html?erro=" + encode(msg);
     }
