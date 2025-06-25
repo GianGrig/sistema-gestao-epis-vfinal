@@ -32,6 +32,11 @@ public class UsuarioController {
             return redirectComMensagemErro("Email inválido.");
         }
 
+        // VERIFICAÇÃO DE E-MAIL JÁ CADASTRADO
+        if (usuarioRepository.buscarPorEmail(email) != null) {
+            return redirectComMensagemErro("Este e-mail já está cadastrado.");
+        }
+
         if (!senha.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{6,}$")) {
             return redirectComMensagemErro("A senha deve ter ao menos 6 caracteres, incluindo maiúsculas, minúsculas, número e caractere especial.");
         }
@@ -66,6 +71,11 @@ public class UsuarioController {
 
         if (!email.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")) {
             return redirectComMensagemErro("Email inválido.");
+        }
+
+        // VERIFICAÇÃO DE E-MAIL JÁ CADASTRADO
+        if (usuarioRepository.buscarPorEmail(email) != null) {
+            return redirectComMensagemErro("Este e-mail já está cadastrado.");
         }
 
         if (!senha.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{6,}$")) {

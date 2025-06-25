@@ -168,35 +168,40 @@
     const divMensagem = document.getElementById("mensagem");
 
     if (erro) {
-        divMensagem.innerHTML = decodeURIComponent(erro);
+        // Você pode escolher entre innerHTML ou textContent aqui
+        divMensagem.textContent = decodeURIComponent(erro);
         divMensagem.className = "mensagem erro";
     } else if (sucesso) {
-        divMensagem.innerHTML = decodeURIComponent(sucesso);
+        divMensagem.textContent = decodeURIComponent(sucesso);
         divMensagem.className = "mensagem sucesso";
     }
 
-    document.getElementById("id_usuario_editar").addEventListener("change", function () {
-        const id = this.value;
-        if (!id) return;
+    const selectUsuario = document.getElementById("id_usuario_editar");
+    if (selectUsuario) {
+        selectUsuario.addEventListener("change", function () {
+            const id = this.value;
+            if (!id) return;
 
-        fetch(`/usuarios/${id}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error("Usuário com ID " + id + " não encontrado.");
-                }
-                return response.json();
-            })
-            .then(data => {
-                document.getElementById("nome_editar").value = data.nome;
-                document.getElementById("email_editar").value = data.email;
-                document.getElementById("perfil_editar").value = data.perfil;
-                document.getElementById("senha_editar").value = ""; // senha nunca preenchida
-            })
-            .catch(error => {
-                const erroEncoded = encodeURIComponent(error.message);
-                window.location.href = "/usuario/form_usuario.html?erro=" + erroEncoded;
-            });
-    });
+            fetch(`/usuarios/${id}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Usuário com ID " + id + " não encontrado.");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    document.getElementById("nome_editar").value = data.nome;
+                    document.getElementById("email_editar").value = data.email;
+                    document.getElementById("perfil_editar").value = data.perfil;
+                    document.getElementById("senha_editar").value = ""; // nunca preenchida por segurança
+                })
+                .catch(error => {
+                    const erroEncoded = encodeURIComponent(error.message);
+                    window.location.href = "/usuario/form_usuario.html?erro=" + erroEncoded;
+                });
+        });
+    }
 </script>
+
 </body>
 </html>

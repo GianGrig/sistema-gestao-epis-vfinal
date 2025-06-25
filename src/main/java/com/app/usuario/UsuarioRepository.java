@@ -63,4 +63,16 @@ public class UsuarioRepository {
         String sql = "DELETE FROM usuarios WHERE id_usuario = ?";
         jdbc.update(sql, id_usuario);
     }
+
+    public Usuario buscarPorEmail(String email) {
+        String sql = "SELECT * FROM usuarios WHERE email = ?";
+        List lista = jdbc.query(sql, (rs, rowNum) -> new Usuario(
+                rs.getInt("id_usuario"),
+                rs.getString("nome"),
+                rs.getString("email"),
+                rs.getString("senha"),
+                Perfil.valueOf(rs.getString("perfil"))
+        ), email);
+        return lista.isEmpty() ? null : (Usuario) lista.get(0);
+    }
 }
