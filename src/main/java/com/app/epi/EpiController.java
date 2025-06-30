@@ -18,7 +18,7 @@ public class EpiController {
     @Autowired
     private EpiRepository epiRepository;
 
-    @PostMapping("/epis")
+    @PostMapping("/html/epis")
     public String salvar(@RequestParam String nome, @RequestParam int quantidade) {
         if (nome.length() < 2 || nome.length() > 100) {
             return redirectComMensagemErro("O nome deve ter entre 2 e 100 caracteres.");
@@ -35,13 +35,13 @@ public class EpiController {
         return redirectComMensagemSucesso("EPI cadastrado com sucesso.");
     }
 
-    @GetMapping("/epis")
+    @GetMapping("/html/epis")
     @ResponseBody
     public List<Epi> listar() {
         return epiRepository.buscarTodos();
     }
 
-    @PostMapping("/epis/atualizar")
+    @PostMapping("/html/epis/atualizar")
     public String atualizar(@RequestParam int id_epi,
                             @RequestParam String nome,
                             @RequestParam int quantidade) {
@@ -65,7 +65,7 @@ public class EpiController {
         return redirectComMensagemSucesso("EPI atualizado com sucesso.");
     }
 
-    @GetMapping("/epis/{id}")
+    @GetMapping("/html/epis/{id}")
     @ResponseBody
     public Epi buscarPorId(@PathVariable int id) {
         Epi epi = epiRepository.buscarPorId(id);
@@ -75,7 +75,7 @@ public class EpiController {
         return epi;
     }
 
-    @PostMapping("/epis/deletar")
+    @PostMapping("/html/epis/deletar")
     public String deletar(@RequestParam int id_epi) {
         Epi existente = epiRepository.buscarPorId(id_epi);
         if (existente == null) {
@@ -92,11 +92,11 @@ public class EpiController {
 
     // Utilitários para mensagens
     private String redirectComMensagemErro(String mensagem) {
-        return "redirect:/epi/form_epi.html?erro=" + encode(mensagem);
+        return "redirect:/html/epi/form_epi.html?erro=" + encode(mensagem);
     }
 
     private String redirectComMensagemSucesso(String mensagem) {
-        return "redirect:/epi/form_epi.html?sucesso=" + encode(mensagem);
+        return "redirect:/html/epi/form_epi.html?sucesso=" + encode(mensagem);
     }
 
     private String encode(String mensagem) {

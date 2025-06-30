@@ -75,4 +75,6 @@ public class UsuarioRepository {
         ), email);
         return lista.isEmpty() ? null : (Usuario) lista.get(0);
     }
+
+
 }

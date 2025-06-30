@@ -49,4 +49,40 @@ public class DevolucaoRepository {
         );
         return resultado.isEmpty() ? null : resultado.get(0);
     }
+
+    public List<Devolucao> buscarPorUsuario(int idUsuario) {
+        String sql = """
+        SELECT d.id_devolucao, d.id_emprestimo, d.data_devolucao
+        FROM devolucao d
+        JOIN emprestimo e ON d.id_emprestimo = e.id_emprestimo
+        WHERE e.id_usuario = ?
+    """;
+
+        return jdbc.query(sql, new Object[]{idUsuario}, new RowMapper<Devolucao>() {
+            @Override
+            public Devolucao mapRow(ResultSet rs, int rowNum) throws SQLException {
+                return new Devolucao(
+                        rs.getInt("id_devolucao"),
+                        rs.getInt("id_emprestimo"),
+                        rs.getTimestamp("data_devolucao").toLocalDateTime()
+                );
+            }
+        });
+    }
+
+    public List<DevolucaoDTO> buscarDTOsPorUsuario(int idUsuario) {
+        String sql = """
+        SELECT ep.nome AS nome_epi, em.data_retirada, d.data_devolucao
+        FROM devolucao d
+        JOIN emprestimo em ON d.id_emprestimo = em.id_emprestimo
+        JOIN epis ep ON em.id_epi = ep.id_epi
+        WHERE em.id_usuario = ?
+    """;
+
+        return jdbc.query(sql, new Object[]{idUsuario}, (rs, rowNum) -> new DevolucaoDTO(
+                rs.getString("nome_epi"),
+                rs.getTimestamp("data_retirada").toLocalDateTime(),
+                rs.getTimestamp("data_devolucao").toLocalDateTime()
+        ));
+    }
 }

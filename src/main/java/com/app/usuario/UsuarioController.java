@@ -18,7 +18,7 @@ public class UsuarioController {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    @PostMapping("/usuario")
+    @PostMapping("/html/usuario")
     public String salvar(@RequestParam String nome,
                          @RequestParam String email,
                          @RequestParam String senha,
@@ -47,19 +47,19 @@ public class UsuarioController {
         return redirectComMensagemSucesso("Usuário cadastrado com sucesso.");
     }
 
-    @GetMapping("/usuario")
+    @GetMapping("/html/usuario")
     @ResponseBody
     public List<Usuario> listar() {
         return usuarioRepository.buscarTodos();
     }
 
-    @PostMapping("/usuario/atualizar")
+    @PostMapping("/html/usuario/atualizar")
     public String atualizar(@RequestParam int id_usuario,
                             @RequestParam String nome,
                             @RequestParam String email,
                             @RequestParam String senha,
                             @RequestParam Perfil perfil) {
-
+        System.out.println("oi");
         Usuario existente = usuarioRepository.buscarPorId(id_usuario);
         if (existente == null) {
             return redirectComMensagemErro("Usuário com ID " + id_usuario + " não encontrado.");
@@ -73,10 +73,12 @@ public class UsuarioController {
             return redirectComMensagemErro("Email inválido.");
         }
 
-        // VERIFICAÇÃO DE E-MAIL JÁ CADASTRADO
-        if (usuarioRepository.buscarPorEmail(email) != null) {
-            return redirectComMensagemErro("Este e-mail já está cadastrado.");
+        Usuario outroUsuario = usuarioRepository.buscarPorEmail(email);
+        if (outroUsuario != null && outroUsuario.getId_usuario() != id_usuario) {
+            return redirectComMensagemErro("Este e-mail já está cadastrado por outro usuário.");
         }
+
+
 
         if (!senha.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{6,}$")) {
             return redirectComMensagemErro("A senha deve ter ao menos 6 caracteres, incluindo maiúsculas, minúsculas, número e caractere especial.");
@@ -88,7 +90,7 @@ public class UsuarioController {
         return redirectComMensagemSucesso("Usuário atualizado com sucesso.");
     }
 
-    @GetMapping("/usuarios/{id}")
+    @GetMapping("/html/usuarios/{id}")
     @ResponseBody
     public Usuario buscarPorId(@PathVariable int id) {
         Usuario usuario = usuarioRepository.buscarPorId(id);
@@ -99,7 +101,7 @@ public class UsuarioController {
     }
 
 
-    @PostMapping("/usuario/deletar")
+    @PostMapping("/html/usuario/deletar")
     public String deletar(@RequestParam int id_usuario) {
         Usuario existente = usuarioRepository.buscarPorId(id_usuario);
         if (existente == null) {
@@ -116,11 +118,11 @@ public class UsuarioController {
 
     // Utilitários para mensagens
     private String redirectComMensagemErro(String mensagem) {
-        return "redirect:/usuario/form_usuario.html?erro=" + encode(mensagem);
+        return "redirect:/html/usuario/form_usuario.html?erro=" + encode(mensagem);
     }
 
     private String redirectComMensagemSucesso(String mensagem) {
-        return "redirect:/usuario/form_usuario.html?sucesso=" + encode(mensagem);
+        return "redirect:/html/usuario/form_usuario.html?sucesso=" + encode(mensagem);
     }
 
 

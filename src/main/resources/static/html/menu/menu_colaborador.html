@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Menu Principal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #eef2f7;
+            margin: 0;
+            padding: 0;
+        }
+
+        section {
+            max-width: 400px;
+            margin: 60px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 28px;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+
+        .botao-menu {
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .botao-menu a button {
+            padding: 12px;
+            width: 220px;
+            font-size: 16px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .botao-menu a button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+
+<section>
+    <h1>Menu Principal</h1>
+
+    <div class="botao-menu">
+        <a href="/html/emprestimo/listar_emprestimo_colaborador.html">
+            <button type="button">Ver Empréstimos</button>
+        </a>
+    </div>
+
+    <div class="botao-menu">
+        <a href="/html/devolucao/listar_devolucao_colaborador.html">
+            <button type="button">Ver Devoluções</button>
+        </a>
+    </div>
+
+    <div class="botao-menu">
+        <a href="#" onclick="logout(); return false;">
+            <button type="button">Sair</button>
+        </a>
+    </div>
+</section>
+
+<script>
+    function logout() {
+        window.location.replace('/html/login/login.html');
+    }
+
+    // Bloqueia botão voltar
+    history.pushState(null, "", location.href);
+    window.onpopstate = function () {
+        history.pushState(null, "", location.href);
+    };
+</script>
+
+</body>
+</html>

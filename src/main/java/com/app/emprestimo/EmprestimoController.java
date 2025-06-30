@@ -1,8 +1,11 @@
 
 package com.app.emprestimo;
 
+import com.app.usuario.Perfil;
+import com.app.usuario.Usuario;
 import com.app.usuario.UsuarioRepository;
 import com.app.epi.EpiRepository;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -14,6 +17,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -28,7 +32,7 @@ public class EmprestimoController {
     @Autowired
     private EpiRepository epiRepository;
 
-    @PostMapping("/emprestimos")
+    @PostMapping("/html/emprestimos")
     public String salvar(@RequestParam int id_usuario,
                          @RequestParam int id_epi,
                          @RequestParam String data_retirada,
@@ -52,13 +56,13 @@ public class EmprestimoController {
         return redirectComSucesso("Empréstimo cadastrado com sucesso.");
     }
 
-    @GetMapping("/emprestimos")
+    @GetMapping("/html/emprestimos")
     @ResponseBody
     public List<Emprestimo> listar() {
         return emprestimoRepository.buscarTodos();
     }
 
-    @PostMapping("/emprestimos/atualizar")
+    @PostMapping("/html/emprestimos/atualizar")
     public String atualizar(@RequestParam int id_emprestimo,
                             @RequestParam int id_usuario,
                             @RequestParam int id_epi,
@@ -88,7 +92,7 @@ public class EmprestimoController {
         return redirectComSucesso("Empréstimo atualizado com sucesso.");
     }
 
-    @GetMapping("/emprestimos/{id}")
+    @GetMapping("/html/emprestimos/{id}")
     @ResponseBody
     public Emprestimo buscarPorId(@PathVariable int id) {
         Emprestimo emprestimo = emprestimoRepository.buscarPorId(id);
@@ -99,11 +103,11 @@ public class EmprestimoController {
     }
 
     private String redirectComErro(String msg) {
-        return "redirect:/emprestimo/form_emprestimo.html?erro=" + encode(msg);
+        return "redirect:/html/emprestimo/form_emprestimo.html?erro=" + encode(msg);
     }
 
     private String redirectComSucesso(String msg) {
-        return "redirect:/emprestimo/form_emprestimo.html?sucesso=" + encode(msg);
+        return "redirect:/html/emprestimo/form_emprestimo.html?sucesso=" + encode(msg);
     }
 
     private String encode(String msg) {
@@ -112,5 +116,15 @@ public class EmprestimoController {
         } catch (UnsupportedEncodingException e) {
             return msg;
         }
+    }
+
+    @GetMapping("/html/emprestimos/colaborador")
+    @ResponseBody
+    public List<EmprestimoDTO> listarEmprestimosColaborador(HttpSession session) {
+        Usuario usuario = (Usuario) session.getAttribute("usuarioLogado");
+        if (usuario != null && usuario.getPerfil() == Perfil.COLABORADOR) {
+            return emprestimoRepository.buscarDTOsPorUsuario(usuario.getId_usuario());
+        }
+        return new ArrayList<>();
     }
 }

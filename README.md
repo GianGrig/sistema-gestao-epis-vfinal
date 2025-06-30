@@ -1,2 +1,2 @@
 # Sistema Gestão EPIs Verção Final
-http://localhost:8080/menu/menu_adm.html
+http://localhost:8080/html/login/login.html

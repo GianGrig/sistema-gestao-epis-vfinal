@@ -72,4 +72,38 @@ public class EmprestimoRepository {
         });
         return resultado.isEmpty() ? null : resultado.get(0);
     }
+
+    public List<Emprestimo> buscarPorUsuario(int idUsuario) {
+        String sql = "SELECT * FROM emprestimo WHERE id_usuario = ?";
+        return jdbc.query(sql, new Object[]{idUsuario}, new RowMapper<Emprestimo>() {
+            @Override
+            public Emprestimo mapRow(ResultSet rs, int rowNum) throws SQLException {
+                return new Emprestimo(
+                        rs.getInt("id_emprestimo"),
+                        rs.getInt("id_usuario"),
+                        rs.getInt("id_epi"),
+                        rs.getTimestamp("data_retirada").toLocalDateTime(),
+                        rs.getTimestamp("data_prevista_devolucao").toLocalDateTime(),
+                        rs.getBoolean("confirmacao_retirada")
+                );
+            }
+        });
+    }
+
+    public List<EmprestimoDTO> buscarDTOsPorUsuario(int idUsuario) {
+        String sql = """
+        SELECT ep.nome AS nome_epi, em.data_retirada, em.data_prevista_devolucao, em.confirmacao_retirada
+        FROM emprestimo em
+        JOIN epis ep ON em.id_epi = ep.id_epi
+        WHERE em.id_usuario = ?
+    """;
+
+        return jdbc.query(sql, new Object[]{idUsuario}, (rs, rowNum) -> new EmprestimoDTO(
+                rs.getString("nome_epi"),
+                rs.getTimestamp("data_retirada").toLocalDateTime(),
+                rs.getTimestamp("data_prevista_devolucao").toLocalDateTime(),
+                rs.getBoolean("confirmacao_retirada")
+        ));
+    }
+
 }
