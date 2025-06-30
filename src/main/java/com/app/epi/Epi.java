@@ -1,23 +1,37 @@
 package com.app.epi;
 
+/**
+ * Classe que representa um Equipamento de Proteção Individual (EPI).
+ */
 public class Epi {
     private int id_epi;
     private String nome;
     private int quantidade;
 
+    /**
+     * Construtor vazio para frameworks.
+     */
     public Epi() {
     }
 
+    /**
+     * Construtor para criação de EPI sem ID.
+     */
     public Epi(String nome, int quantidade) {
         this.nome = nome;
         this.quantidade = quantidade;
     }
 
+    /**
+     * Construtor com todos os atributos, incluindo ID.
+     */
     public Epi(int id_epi, String nome, int quantidade) {
         this.id_epi = id_epi;
         this.nome = nome;
         this.quantidade = quantidade;
     }
+
+    // Getters e setters
 
     public int getId_epi() {
         return id_epi;

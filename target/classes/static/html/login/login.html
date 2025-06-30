@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <title>Login</title>
     <style>
-        /* seu CSS aqui */
         body {
             font-family: Arial, sans-serif;
             background-color: #eef2f7;
             margin: 0;
             padding: 0;
         }
+
         section {
             width: 100%;
             max-width: 400px;
@@ -21,17 +21,20 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             box-sizing: border-box;
         }
+
         h2 {
             text-align: center;
             font-size: 26px;
             color: #2c3e50;
             margin-bottom: 25px;
         }
+
         label {
             display: block;
             margin-bottom: 5px;
             color: #333;
         }
+
         input, select {
             width: 100%;
             padding: 10px;
@@ -41,6 +44,7 @@
             font-size: 14px;
             box-sizing: border-box;
         }
+
         button {
             width: 100%;
             padding: 12px;
@@ -53,9 +57,11 @@
             transition: background-color 0.3s ease;
             box-sizing: border-box;
         }
+
         button:hover {
             background-color: #2980b9;
         }
+
         .erro-box {
             background-color: #fcebea;
             border: 1px solid #f5c6cb;
@@ -67,6 +73,7 @@
             margin-bottom: 15px;
             display: none;
         }
+
     </style>
 </head>
 <body>
@@ -74,9 +81,11 @@
 <section>
     <h2>Acesso ao Sistema</h2>
 
-    <div id="erro" class="erro-box"></div>
+    <div id="erro" class="erro-box">
+        <!-- Mensagem de erro aparece via script -->
+    </div>
 
-    <form id="formLogin" action="/login" method="post">
+    <form action="/login" method="post">
         <label for="email">Email:</label>
         <input type="email" name="email" id="email" required>
 
@@ -101,28 +110,10 @@
         erroBox.style.display = 'block';
     }
 
-    // Bloqueia o botão voltar para essa página
-    history.pushState(null, "", location.href);
+    history.pushState(null, "", window.location.href);
     window.onpopstate = function () {
-        history.pushState(null, "", location.href);
+        history.pushState(null, "", window.location.href);
     };
-
-    // EXEMPLO de redirecionamento após login bem-sucedido:
-    // Suponha que seu backend ou frontend envie uma resposta que o login foi ok,
-    // então, no JS você deve usar:
-    /*
-    document.getElementById('formLogin').addEventListener('submit', function(event){
-        event.preventDefault();
-        // Aqui faça a verificação do login com fetch/ajax ou outro método
-        // Se login OK, faça redirecionamento:
-        // Exemplo:
-        // if(perfil === "ADMINISTRADOR"){
-        //     window.location.replace('/html/menu_adm.html');
-        // } else {
-        //     window.location.replace('/html/menu_colaborador.html');
-        // }
-    });
-    */
 </script>
 
 </body>

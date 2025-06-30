@@ -17,35 +17,46 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Controlador responsável pelo registro, atualização e listagem de devoluções de EPIs.
+ */
 @Controller
 public class DevolucaoController {
 
     @Autowired
     private DevolucaoRepository devolucaoRepository;
-
     @Autowired
     private EmprestimoRepository emprestimoRepository;
 
+    /**
+     * Registra uma nova devolução de EPI.
+     */
     @PostMapping("/html/devolucao")
     public String salvar(@RequestParam int id_emprestimo,
                          @RequestParam String data_devolucao) {
+
+        // Validação: empréstimo deve existir
         if (emprestimoRepository.buscarPorId(id_emprestimo) == null) {
             return redirectComMensagemErro("Empréstimo com ID " + id_emprestimo + " não encontrado.");
         }
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
-        LocalDateTime data = LocalDateTime.parse(data_devolucao, formatter);
-
+        LocalDateTime data = LocalDateTime.parse(data_devolucao, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
         devolucaoRepository.salvar(new Devolucao(id_emprestimo, data));
         return redirectComMensagemSucesso("Devolução registrada com sucesso.");
     }
 
+    /**
+     * Retorna todas as devoluções do sistema.
+     */
     @GetMapping("/html/devolucao")
     @ResponseBody
     public List<Devolucao> listar() {
         return devolucaoRepository.buscarTodos();
     }
 
+    /**
+     * Atualiza uma devolução existente.
+     */
     @PostMapping("/html/devolucao/atualizar")
     public String atualizar(@RequestParam int id_devolucao,
                             @RequestParam int id_emprestimo,
@@ -59,13 +70,14 @@ public class DevolucaoController {
             return redirectComMensagemErro("Empréstimo com ID " + id_emprestimo + " não encontrado.");
         }
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
-        LocalDateTime data = LocalDateTime.parse(data_devolucao, formatter);
-
+        LocalDateTime data = LocalDateTime.parse(data_devolucao, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
         devolucaoRepository.atualizar(new Devolucao(id_devolucao, id_emprestimo, data));
         return redirectComMensagemSucesso("Devolução atualizada com sucesso.");
     }
 
+    /**
+     * Busca uma devolução por ID.
+     */
     @GetMapping("/html/devolucao/{id:[0-9]+}")
     @ResponseBody
     public Devolucao buscarPorId(@PathVariable int id) {
@@ -76,15 +88,9 @@ public class DevolucaoController {
         return devolucao;
     }
 
-    // Métodos utilitários
-    private String redirectComMensagemErro(String msg) {
-        return "redirect:/html/devolucao/form_devolucao.html?erro=" + URLEncoder.encode(msg, StandardCharsets.UTF_8);
-    }
-
-    private String redirectComMensagemSucesso(String msg) {
-        return "redirect:/html/devolucao/form_devolucao.html?sucesso=" + URLEncoder.encode(msg, StandardCharsets.UTF_8);
-    }
-
+    /**
+     * Retorna todas as devoluções feitas pelo colaborador logado.
+     */
     @GetMapping("/html/devolucoes/colaborador")
     @ResponseBody
     public List<DevolucaoDTO> listarDevolucoesColaborador(HttpSession session) {
@@ -93,5 +99,15 @@ public class DevolucaoController {
             return devolucaoRepository.buscarDTOsPorUsuario(usuario.getId_usuario());
         }
         return new ArrayList<>();
+    }
+
+    // Métodos utilitários
+
+    private String redirectComMensagemErro(String msg) {
+        return "redirect:/html/devolucao/form_devolucao.html?erro=" + URLEncoder.encode(msg, StandardCharsets.UTF_8);
+    }
+
+    private String redirectComMensagemSucesso(String msg) {
+        return "redirect:/html/devolucao/form_devolucao.html?sucesso=" + URLEncoder.encode(msg, StandardCharsets.UTF_8);
     }
 }

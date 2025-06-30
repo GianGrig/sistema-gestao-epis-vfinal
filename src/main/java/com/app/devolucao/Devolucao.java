@@ -2,19 +2,31 @@ package com.app.devolucao;
 
 import java.time.LocalDateTime;
 
+/**
+ * Representa a devolução de um EPI emprestado.
+ */
 public class Devolucao {
     private int id_devolucao;
     private int id_emprestimo;
     private LocalDateTime data_devolucao;
 
+    /**
+     * Construtor padrão.
+     */
     public Devolucao() {
     }
 
+    /**
+     * Construtor para criação de nova devolução (sem ID).
+     */
     public Devolucao(int id_emprestimo, LocalDateTime data_devolucao) {
         this.id_emprestimo = id_emprestimo;
         this.data_devolucao = data_devolucao;
     }
 
+    /**
+     * Construtor completo.
+     */
     public Devolucao(int id_devolucao, int id_emprestimo, LocalDateTime data_devolucao) {
         this.id_devolucao = id_devolucao;
         this.id_emprestimo = id_emprestimo;

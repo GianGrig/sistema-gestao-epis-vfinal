@@ -2,6 +2,9 @@ package com.app.emprestimo;
 
 import java.time.LocalDateTime;
 
+/**
+ * DTO usado para exibir os dados de empréstimos com informações resumidas ao colaborador.
+ */
 public class EmprestimoDTO {
     private String nomeEpi;
     private LocalDateTime dataRetirada;

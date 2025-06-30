@@ -2,6 +2,9 @@ package com.app.devolucao;
 
 import java.time.LocalDateTime;
 
+/**
+ * DTO para exibir dados resumidos de devolução ao colaborador.
+ */
 public class DevolucaoDTO {
     private String nomeEpi;
     private LocalDateTime dataRetirada;

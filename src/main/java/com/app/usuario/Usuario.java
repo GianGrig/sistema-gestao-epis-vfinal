@@ -1,5 +1,8 @@
 package com.app.usuario;
 
+/**
+ * Classe que representa um usuário do sistema.
+ */
 public class Usuario {
     private int id_usuario;
     private String nome;
@@ -7,8 +10,15 @@ public class Usuario {
     private String senha;
     private Perfil perfil;
 
-    public Usuario() {}
+    /**
+     * Construtor vazio.
+     */
+    public Usuario() {
+    }
 
+    /**
+     * Construtor usado para criar um novo usuário sem ID.
+     */
     public Usuario(String nome, String email, String senha, Perfil perfil) {
         this.nome = nome;
         this.email = email;
@@ -16,6 +26,9 @@ public class Usuario {
         this.perfil = perfil;
     }
 
+    /**
+     * Construtor usado quando o usuário já possui um ID (ex: vindo do banco).
+     */
     public Usuario(int id_usuario, String nome, String email, String senha, Perfil perfil) {
         this.id_usuario = id_usuario;
         this.nome = nome;
@@ -23,6 +36,8 @@ public class Usuario {
         this.senha = senha;
         this.perfil = perfil;
     }
+
+    // Getters e setters
 
     public int getId_usuario() {
         return id_usuario;

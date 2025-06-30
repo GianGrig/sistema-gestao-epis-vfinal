@@ -1,8 +1,10 @@
-// Emprestimo.java
 package com.app.emprestimo;
 
 import java.time.LocalDateTime;
 
+/**
+ * Classe que representa um empréstimo de EPI para um usuário.
+ */
 public class Emprestimo {
     private int id_emprestimo;
     private int id_usuario;
@@ -11,9 +13,15 @@ public class Emprestimo {
     private LocalDateTime data_prevista_devolucao;
     private boolean confirmacao_retirada;
 
+    /**
+     * Construtor padrão (usado por frameworks).
+     */
     public Emprestimo() {
     }
 
+    /**
+     * Construtor para novo empréstimo (sem ID).
+     */
     public Emprestimo(int id_usuario, int id_epi, LocalDateTime data_retirada, LocalDateTime data_prevista_devolucao, boolean confirmacao_retirada) {
         this.id_usuario = id_usuario;
         this.id_epi = id_epi;
@@ -22,6 +30,9 @@ public class Emprestimo {
         this.confirmacao_retirada = confirmacao_retirada;
     }
 
+    /**
+     * Construtor completo.
+     */
     public Emprestimo(int id_emprestimo, int id_usuario, int id_epi, LocalDateTime data_retirada, LocalDateTime data_prevista_devolucao, boolean confirmacao_retirada) {
         this.id_emprestimo = id_emprestimo;
         this.id_usuario = id_usuario;
@@ -30,6 +41,8 @@ public class Emprestimo {
         this.data_prevista_devolucao = data_prevista_devolucao;
         this.confirmacao_retirada = confirmacao_retirada;
     }
+
+    // Getters e setters
 
     public int getId_emprestimo() {
         return id_emprestimo;
