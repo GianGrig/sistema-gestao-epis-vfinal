@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #eef2f7;
+            margin: 0;
+            padding: 0;
+        }
+
+        section {
+            width: 100%;
+            max-width: 400px;
+            margin: 60px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 26px;
+            color: #2c3e50;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 18px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        .erro-box {
+            background-color: #fcebea;
+            border: 1px solid #f5c6cb;
+            color: #a94442;
+            padding: 12px;
+            border-radius: 6px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+    </style>
+</head>
+<body>
+
+<section>
+    <h2>Acesso ao Sistema</h2>
+
+    <div id="erro" class="erro-box">
+        <!-- Mensagem de erro aparece via script -->
+    </div>
+
+    <form action="/login" method="post">
+        <label for="email">Email:</label>
+        <input type="email" name="username" id="email" required />
+
+        <label for="senha">Senha:</label>
+        <input type="password" name="password" id="senha" required />
+
+        <button type="submit">Entrar</button>
+    </form>
+
+</section>
+
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('error') !== null) {
+        const erroBox = document.getElementById('erro');
+        erroBox.textContent = 'Credenciais inválidas.';
+        erroBox.style.display = 'block';
+    }
+</script>
+
+</body>
+</html>
