@@ -1,11 +1,11 @@
 package com.app.devolucao;
 
 import com.app.emprestimo.EmprestimoRepository;
-import com.app.usuario.Perfil;
-import com.app.usuario.Usuario;
-import jakarta.servlet.http.HttpSession;
+import com.app.security.UsuarioDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -17,25 +17,20 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Controlador responsável pelo registro, atualização e listagem de devoluções de EPIs.
- */
 @Controller
+@RequestMapping("/devolucao")
 public class DevolucaoController {
 
     @Autowired
     private DevolucaoRepository devolucaoRepository;
+
     @Autowired
     private EmprestimoRepository emprestimoRepository;
 
-    /**
-     * Registra uma nova devolução de EPI.
-     */
-    @PostMapping("/html/devolucao")
+    @PostMapping
     public String salvar(@RequestParam int id_emprestimo,
                          @RequestParam String data_devolucao) {
 
-        // Validação: empréstimo deve existir
         if (emprestimoRepository.buscarPorId(id_emprestimo) == null) {
             return redirectComMensagemErro("Empréstimo com ID " + id_emprestimo + " não encontrado.");
         }
@@ -45,19 +40,7 @@ public class DevolucaoController {
         return redirectComMensagemSucesso("Devolução registrada com sucesso.");
     }
 
-    /**
-     * Retorna todas as devoluções do sistema.
-     */
-    @GetMapping("/html/devolucao")
-    @ResponseBody
-    public List<Devolucao> listar() {
-        return devolucaoRepository.buscarTodos();
-    }
-
-    /**
-     * Atualiza uma devolução existente.
-     */
-    @PostMapping("/html/devolucao/atualizar")
+    @PostMapping("/atualizar")
     public String atualizar(@RequestParam int id_devolucao,
                             @RequestParam int id_emprestimo,
                             @RequestParam String data_devolucao) {
@@ -75,10 +58,28 @@ public class DevolucaoController {
         return redirectComMensagemSucesso("Devolução atualizada com sucesso.");
     }
 
-    /**
-     * Busca uma devolução por ID.
-     */
-    @GetMapping("/html/devolucao/{id:[0-9]+}")
+    @GetMapping("/form")
+    public String formHtml() {
+        return "devolucao/form_devolucao";
+    }
+
+    @GetMapping("/listar")
+    public String listarHtml() {
+        return "devolucao/listar_devolucao";
+    }
+
+    @GetMapping("/listar/colaborador")
+    public String listarColaboradorHtml() {
+        return "devolucao/listar_devolucao_colaborador";
+    }
+
+    @GetMapping("/todos")
+    @ResponseBody
+    public List<Devolucao> listar() {
+        return devolucaoRepository.buscarTodos();
+    }
+
+    @GetMapping("/{id:[0-9]+}")
     @ResponseBody
     public Devolucao buscarPorId(@PathVariable int id) {
         Devolucao devolucao = devolucaoRepository.buscarPorId(id);
@@ -88,26 +89,25 @@ public class DevolucaoController {
         return devolucao;
     }
 
-    /**
-     * Retorna todas as devoluções feitas pelo colaborador logado.
-     */
-    @GetMapping("/html/devolucoes/colaborador")
+    @GetMapping("/colaborador")
     @ResponseBody
-    public List<DevolucaoDTO> listarDevolucoesColaborador(HttpSession session) {
-        Usuario usuario = (Usuario) session.getAttribute("usuarioLogado");
-        if (usuario != null && usuario.getPerfil() == Perfil.COLABORADOR) {
-            return devolucaoRepository.buscarDTOsPorUsuario(usuario.getId_usuario());
+    public List<DevolucaoDTO> listarDevolucoesColaborador() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = auth.getPrincipal();
+
+        if (principal instanceof UsuarioDetails usuarioDetails) {
+            int idUsuario = usuarioDetails.getId();
+            return devolucaoRepository.buscarDTOsPorUsuario(idUsuario);
         }
+
         return new ArrayList<>();
     }
 
-    // Métodos utilitários
-
     private String redirectComMensagemErro(String msg) {
-        return "redirect:/html/devolucao/form_devolucao.html?erro=" + URLEncoder.encode(msg, StandardCharsets.UTF_8);
+        return "redirect:/devolucao/form?erro=" + URLEncoder.encode(msg, StandardCharsets.UTF_8);
     }
 
     private String redirectComMensagemSucesso(String msg) {
-        return "redirect:/html/devolucao/form_devolucao.html?sucesso=" + URLEncoder.encode(msg, StandardCharsets.UTF_8);
+        return "redirect:/devolucao/form?sucesso=" + URLEncoder.encode(msg, StandardCharsets.UTF_8);
     }
 }
