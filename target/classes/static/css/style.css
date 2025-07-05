@@ -1,0 +1,151 @@
+/* --- RESET E CONFIGURAÇÕES GLOBAIS --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #f0f0f0;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* --- CABEÇALHO (HEADER) --- */
+.main-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px 0;
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.logo {
+    height: 45px;
+}
+
+/* --- NAVEGAÇÃO DO MENU (COM ANIMAÇÃO) --- */
+.main-nav ul {
+    list-style: none;
+    display: flex;
+    gap: 40px; /* Espaçamento ajustado para os novos links */
+}
+
+.main-nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 14px;
+    padding-bottom: 5px;
+    position: relative; /* Essencial para a animação da barra */
+}
+
+/* Cria a barrinha verde escondida (com largura 0) */
+.main-nav ul li a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0; /* Começa com largura zero */
+    height: 2px;
+    background-color: #28a745; /* Cor verde da barra */
+    transition: width 0.3s ease-out; /* A animação da largura */
+}
+
+/* Expande a barrinha quando o mouse passa por cima OU se o link estiver ativo */
+.main-nav ul li a:hover::after,
+.main-nav ul li a.active::after {
+    width: 100%; /* Expande a largura para 100% */
+}
+
+/* Efeito hover sutil na cor do texto para links não ativos */
+.main-nav ul li a:not(.active):hover {
+    color: #f0f0f0;
+}
+
+/* --- SEÇÃO PRINCIPAL (HERO) --- */
+.hero-section {
+    height: 100vh;
+    background-image:
+        /* Gradiente para escurecer a imagem e dar contraste */
+            linear-gradient(rgba(0, 20, 40, 0.5), rgba(0, 20, 40, 0.5)),
+                /* Caminho da imagem de fundo CORRIGIDO */
+            url('../images/fundo_tela.png');
+    background-size: cover;
+    background-position: center;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    color: white;
+}
+
+.hero-content {
+    padding-left: 5%;
+}
+
+.hero-content h1 {
+    font-size: 52px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.hero-content .slogan {
+    font-size: 24px;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+
+.hero-content .description {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.6;
+    max-width: 450px;
+    margin-bottom: 30px;
+}
+
+/* --- ESTILOS DOS BOTÕES --- */
+.btn {
+    padding: 12px 28px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+/* Botão Principal (Verde Sólido) */
+.btn-primary {
+    background-color: #28a745;
+    color: white;
+    border: 2px solid #28a745;
+}
+
+.btn-primary:hover {
+    background-color: #218838;
+    border-color: #218838;
+}
+
+/* Botão Fantasma (Login) */
+.btn-ghost {
+    background-color: transparent;
+    color: white;
+    border: 2px solid white;
+}
+
+.btn-ghost:hover {
+    background-color: white;
+    color: #28a745;
+}

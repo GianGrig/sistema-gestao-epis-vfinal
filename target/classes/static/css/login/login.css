@@ -1,0 +1,127 @@
+/* --- Conteúdo para: resources/static/css/login/login.css --- */
+
+/* --- ESTILOS GERAIS --- */
+body {
+    font-family: 'Montserrat', sans-serif;
+    /* Cor de fundo que aparecerá caso o padrão SVG não carregue */
+    background-color: #eef2f7;
+
+    /* ✅ NOVO: Padrão de pontos sutis como imagem de fundo */
+    background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23dce4ec' fill-opacity='0.6' fill-rule='evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%3C/g%3E%3C/svg%3E");
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* --- CONTAINER DO LOGIN --- */
+.login-container {
+    width: 100%;
+    max-width: 400px;
+    padding: 40px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* --- LOGO --- */
+.logo-container {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.logo {
+    max-width: 150px;
+}
+
+/* --- TÍTULO --- */
+h2 {
+    text-align: center;
+    font-size: 22px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin: 0 0 25px 0;
+}
+
+/* --- FORMULÁRIO --- */
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: 'Montserrat', sans-serif;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input:focus {
+    outline: none;
+    border-color: #28a745;
+    box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
+}
+
+/* --- BOTÃO --- */
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 700;
+    font-family: 'Montserrat', sans-serif;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+/* --- NOVO: Estilo do link de Voltar --- */
+.voltar-link-container {
+    text-align: center;
+    margin-top: 25px;
+}
+
+.voltar-link {
+    color: #555;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.voltar-link:hover {
+    color: #000;
+    text-decoration: underline;
+}
+
+/* --- MENSAGEM DE ERRO (Estilo Minimalista) --- */
+.erro-box {
+    /* A linha "display: none;" foi REMOVIDA */
+    display: flex; /* Garante que o ícone e o texto fiquem alinhados */
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding: 10px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #c82333;
+    background-color: rgba(216, 62, 75, 0.08);
+    border: 1px solid rgba(216, 62, 75, 0.2);
+    border-radius: 6px;
+}

@@ -2,8 +2,8 @@ package com.app.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+// import org.springframework.security.authentication.AuthenticationManager; // PODE REMOVER
+// import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder; // PODE REMOVER
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,25 +22,23 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        // ESTE MÉTODO CONTINUA EXATAMENTE IGUAL
         return http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
+                                "/",
                                 "/login",
                                 "/css/**",
                                 "/js/**",
                                 "/images/**"
                         ).permitAll()
-
-                        // Rotas do COLABORADOR
                         .requestMatchers(
                                 "/menu/colaborador/**",
                                 "/emprestimos/colaborador",
                                 "/emprestimos/listar/colaborador",
                                 "/devolucao/listar/colaborador",
-                                "/devolucao/colaborador" // ✅ Adicionado
+                                "/devolucao/colaborador"
                         ).hasRole("COLABORADOR")
-
-                        // Rotas do ADMINISTRADOR
                         .requestMatchers(
                                 "/usuario/**",
                                 "/menu/adm/**",
@@ -48,13 +46,13 @@ public class SecurityConfig {
                                 "/devolucao/**",
                                 "/epis/**"
                         ).hasRole("ADMINISTRADOR")
-
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
                         .defaultSuccessUrl("/redirecionar", true)
+                        .failureUrl("/login?error")
                         .permitAll()
                 )
                 .logout(logout -> logout
@@ -70,13 +68,17 @@ public class SecurityConfig {
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
+        // ESTE MÉTODO CONTINUA IGUAL
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public AuthenticationManager authManager(HttpSecurity http) throws Exception {
-        AuthenticationManagerBuilder builder = http.getSharedObject(AuthenticationManagerBuilder.class);
-        builder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-        return builder.build();
-    }
+    /*
+     * ✅ APAGUE OU COMENTE O MÉTODO ABAIXO INTEIRO
+     */
+    // @Bean
+    // public AuthenticationManager authManager(HttpSecurity http) throws Exception {
+    //     AuthenticationManagerBuilder builder = http.getSharedObject(AuthenticationManagerBuilder.class);
+    //     builder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+    //     return builder.build();
+    // }
 }
